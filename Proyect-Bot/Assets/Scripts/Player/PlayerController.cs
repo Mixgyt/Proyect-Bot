@@ -12,6 +12,15 @@ public class PlayerController : MonoBehaviour
    [Range(0,0.3f)][SerializeField] private float suavizadoDeMovimiento;
    private Vector3 velocidad = Vector3.zero;
    private bool mirandoDerecha = true;
+
+      [Header("Jump")]
+    [SerializeField] private float JumpForce;
+    [SerializeField]private LayerMask WhatIsGround;
+    [SerializeField]private Transform GroundController;
+    [SerializeField]private Vector3 BoxDimensions;
+    [SerializeField]private bool inGround;
+    private bool salto=false;
+    private bool doblesalto=false;
    
    //Variables de Animación
    private Animator botAnim;
@@ -23,17 +32,30 @@ public class PlayerController : MonoBehaviour
    }
 
     //Funcion repetida cada frame
-   void Update(){
+   void Update()
+   {
        movimientoHorizontal = Input.GetAxisRaw("Horizontal")*velocidadDeMovimiento;
+
+        if(Input.GetButtonDown("Jump"))
+        {
+          salto=true;
+        }
    }
 
     //Funcion que se repite consecutivamente sin importar los frames
    void FixedUpdate(){
-       Mover(movimientoHorizontal * Time.fixedDeltaTime);
+       Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
+
+        inGround = Physics2D.OverlapBox(GroundController.position, BoxDimensions, 0f, WhatIsGround);
+      //Mover
+      Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
+
+      salto=false;
+      if(inGround){doblesalto=true; botAnim.SetBool("salto",false);}
    }
 
     //Funcion de movimiento del personaje
-   private void Mover(float movimiento){
+   private void Mover(float movimiento, bool saltar){
        Vector3 velocidadObjetivo = new Vector3(movimiento, rb2d.velocity.y);
        rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, velocidadObjetivo, ref velocidad, suavizadoDeMovimiento);
 
@@ -46,6 +68,13 @@ public class PlayerController : MonoBehaviour
        }else if(movimiento<0 && mirandoDerecha){
            Girar();
        }
+
+     if(inGround && saltar){
+         inGround=false;
+         rb2d.AddForce(new Vector2(0f, JumpForce));
+         botAnim.SetBool("salto",true);
+     }else if(doblesalto && saltar){rb2d.AddForce(new Vector2(0f, JumpForce/1.7f)); doblesalto=false;} 
+
    }
 
     //Funcion para girar el personaje si no esta viendo donde camina
@@ -54,5 +83,10 @@ public class PlayerController : MonoBehaviour
        Vector3 escala = transform.localScale;
        escala.x *= -1;
        transform.localScale = escala;
+   }
+
+   void OnDrawGizmos(){
+       Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(GroundController.position, BoxDimensions);
    }
 }
