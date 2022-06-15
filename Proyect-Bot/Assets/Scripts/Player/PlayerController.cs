@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Vector3 BoxDimensions;
     [SerializeField]private bool inGround;
     private bool salto=false;
-    private bool doblesalto=false;
    
    //Variables de Animación
    private Animator botAnim;
@@ -51,7 +50,7 @@ public class PlayerController : MonoBehaviour
       Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
 
       salto=false;
-      if(inGround){doblesalto=true; botAnim.SetBool("salto",false);}
+      if(inGround){botAnim.SetBool("salto",false);}
    }
 
     //Funcion de movimiento del personaje
@@ -69,11 +68,7 @@ public class PlayerController : MonoBehaviour
            Girar();
        }
 
-     if(inGround && saltar){
-         inGround=false;
-         rb2d.AddForce(new Vector2(0f, JumpForce));
-         botAnim.SetBool("salto",true);
-     }else if(doblesalto && saltar){rb2d.AddForce(new Vector2(0f, JumpForce/1.7f)); doblesalto=false;} 
+      if(saltar&&inGround){rb2d.AddForce(new Vector2(0f, JumpForce/1.5f));} 
 
    }
 
