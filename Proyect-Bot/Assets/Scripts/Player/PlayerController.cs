@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
    private float movimientoHorizontal = 0f;
    [Range(0,0.3f)][SerializeField] private float suavizadoDeMovimiento;
    private Vector3 velocidad = Vector3.zero;
-   private bool mirandoDerecha = true;
+   [System.NonSerialized]public bool mirandoDerecha = true;
 
       [Header("Jump")]
     [SerializeField] private float JumpForce;
@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
       //Mover
       Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
 
-      salto=false;
       if(inGround){botAnim.SetBool("salto",false);}
    }
 
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
            Girar();
        }
 
-      if(saltar&&inGround){rb2d.AddForce(new Vector2(0f, JumpForce/1.5f));} 
+      if(saltar&&inGround){salto=false; rb2d.AddForce(new Vector2(0f, JumpForce));} 
 
    }
 
@@ -80,7 +79,7 @@ public class PlayerController : MonoBehaviour
        transform.localScale = escala;
    }
 
-   void OnDrawGizmos(){
+   void OnDrawGizmosSelected(){
        Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(GroundController.position, BoxDimensions);
    }
