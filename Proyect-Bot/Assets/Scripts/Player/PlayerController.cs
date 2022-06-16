@@ -7,19 +7,22 @@ public class PlayerController : MonoBehaviour
    private Rigidbody2D rb2d;
 
    [Header("Movimiento")]
-   [SerializeField] private float velocidadDeMovimiento;
+   [SerializeField] private float SpeedMovement;
    private float movimientoHorizontal = 0f;
-   [Range(0,0.3f)][SerializeField] private float suavizadoDeMovimiento;
-   private Vector3 velocidad = Vector3.zero;
-   [System.NonSerialized]public bool mirandoDerecha = true;
+   [Range(0,0.3f)][SerializeField] private float smoothMovement;
+   private Vector3 speed = Vector3.zero;
+   [System.NonSerialized]public bool lookRigth = true;
 
-      [Header("Jump")]
-    [SerializeField] private float JumpForce;
+      [Header("Salto")]
+    [SerializeField]private float JumpForce;
     [SerializeField]private LayerMask WhatIsGround;
     [SerializeField]private Transform GroundController;
     [SerializeField]private Vector3 BoxDimensions;
     [SerializeField]private bool inGround;
     private bool salto=false;
+
+      [Header("Vida")]
+    [SerializeField]private double Health;
    
    //Variables de Animación
    private Animator botAnim;
@@ -33,38 +36,38 @@ public class PlayerController : MonoBehaviour
     //Funcion repetida cada frame
    void Update()
    {
-       movimientoHorizontal = Input.GetAxisRaw("Horizontal")*velocidadDeMovimiento;
+       movimientoHorizontal = Input.GetAxisRaw("Horizontal")*SpeedMovement;
 
         if(Input.GetButtonDown("Jump"))
         {
           salto=true;
         }
+
+        if(Health<=0){ GameOver(); }
    }
 
     //Funcion que se repite consecutivamente sin importar los frames
    void FixedUpdate(){
-       Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
-
-        inGround = Physics2D.OverlapBox(GroundController.position, BoxDimensions, 0f, WhatIsGround);
+      inGround = Physics2D.OverlapBox(GroundController.position, BoxDimensions, 0f, WhatIsGround);
       //Mover
-      Mover(movimientoHorizontal * Time.fixedDeltaTime, salto);
+      Movement(movimientoHorizontal * Time.fixedDeltaTime, salto);
 
       if(inGround){botAnim.SetBool("salto",false);}
    }
 
     //Funcion de movimiento del personaje
-   private void Mover(float movimiento, bool saltar){
+   private void Movement(float movimiento, bool saltar){
        Vector3 velocidadObjetivo = new Vector3(movimiento, rb2d.velocity.y);
-       rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, velocidadObjetivo, ref velocidad, suavizadoDeMovimiento);
+       rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, velocidadObjetivo, ref speed, smoothMovement);
 
         //Aqui se activa la animación si el personaje se mueve
        if(movimientoHorizontal!=0){ botAnim.SetBool("walking",true); } 
        else { botAnim.SetBool("walking",false); }
-
-       if(movimiento>0 && !mirandoDerecha){
-           Girar();
-       }else if(movimiento<0 && mirandoDerecha){
-           Girar();
+         //Aqui se gira si el personaje no mira donde camina
+       if(movimiento>0 && !lookRigth){
+           Turn();
+       }else if(movimiento<0 && lookRigth){
+           Turn();
        }
 
       if(saltar&&inGround){salto=false; rb2d.AddForce(new Vector2(0f, JumpForce));} 
@@ -72,11 +75,20 @@ public class PlayerController : MonoBehaviour
    }
 
     //Funcion para girar el personaje si no esta viendo donde camina
-   private void Girar(){
-       mirandoDerecha = !mirandoDerecha;
+   private void Turn(){
+       lookRigth = !lookRigth;
        Vector3 escala = transform.localScale;
        escala.x *= -1;
        transform.localScale = escala;
+   }
+
+   public void DamageReceived(double damage){
+    Health -= damage;
+    print("Tu vida es: "+Health);
+   }
+
+   private void GameOver(){
+    print("Has Muerto");
    }
 
    void OnDrawGizmosSelected(){

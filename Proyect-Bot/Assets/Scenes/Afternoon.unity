@@ -4001,14 +4001,14 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1.75
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 2
+  m_Material: {fileID: 6200000, guid: e57236f25c4a84142aa89e5b25cdcab3, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &785846965
 Animator:
@@ -4109,10 +4109,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5200d2ce38d7be746b20dfd1ce510b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
+  speed: 300
+  smoothMovement: 0.25
+  range: 5
+  burstRange: 1.5
   playerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
 --- !u!1 &874570116
 GameObject:
   m_ObjectHideFlags: 0
@@ -5130,15 +5133,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9517737a627dbc84b9775ced81a54285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadDeMovimiento: 300
-  suavizadoDeMovimiento: 0.06
-  JumpForce: 500
+  SpeedMovement: 300
+  smoothMovement: 0.03
+  JumpForce: 600
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 64
   GroundController: {fileID: 2002177387}
   BoxDimensions: {x: 0.4, y: 0.3, z: 0}
   inGround: 0
+  Health: 3
 --- !u!95 &1644335909
 Animator:
   serializedVersion: 4
