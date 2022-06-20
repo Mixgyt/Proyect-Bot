@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Transform GroundController;
     [SerializeField]private Vector3 BoxDimensions;
     [SerializeField]private bool inGround;
-    private bool salto=false;
+    private bool jump=false;
 
       [Header("Vida")]
     [SerializeField]private double Health;
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetButtonDown("Jump"))
         {
-          salto=true;
+          jump=true;
         }
 
         if(Health<=0){ GameOver(); }
@@ -50,36 +50,42 @@ public class PlayerController : MonoBehaviour
    void FixedUpdate(){
       inGround = Physics2D.OverlapBox(GroundController.position, BoxDimensions, 0f, WhatIsGround);
       //Mover
-      Movement(movimientoHorizontal * Time.fixedDeltaTime, salto);
-
-      if(inGround){botAnim.SetBool("salto",false);}
+      Movement(movimientoHorizontal * Time.fixedDeltaTime, jump);
+      if(inGround){ botAnim.SetBool("salto",false); }
    }
 
     //Funcion de movimiento del personaje
-   private void Movement(float movimiento, bool saltar){
-       Vector3 velocidadObjetivo = new Vector3(movimiento, rb2d.velocity.y);
+   private void Movement(float move, bool saltar){
+       Vector3 velocidadObjetivo = new Vector3(move, rb2d.velocity.y);
        rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, velocidadObjetivo, ref speed, smoothMovement);
 
         //Aqui se activa la animación si el personaje se mueve
-       if(movimientoHorizontal!=0){ botAnim.SetBool("walking",true); } 
-       else { botAnim.SetBool("walking",false); }
+       if(movimientoHorizontal!=0){ botAnim.SetBool("caminando",true); } 
+       else { botAnim.SetBool("caminando",false); }
          //Aqui se gira si el personaje no mira donde camina
-       if(movimiento>0 && !lookRigth){
+       if(move>0 && !lookRigth){
            Turn();
-       }else if(movimiento<0 && lookRigth){
+       }else if(move<0 && lookRigth){
            Turn();
        }
 
-      if(saltar&&inGround){salto=false; rb2d.AddForce(new Vector2(0f, JumpForce));} 
-
+      if(saltar&&inGround){
+        inGround=false; 
+        jump=false; 
+        rb2d.AddForce(new Vector2(0f, JumpForce)); 
+        botAnim.SetBool("salto",true);
+        }
+       
+       botAnim.SetBool("enSuelo",inGround);
+       botAnim.SetFloat("velocidadY",rb2d.velocity.y);
    }
 
     //Funcion para girar el personaje si no esta viendo donde camina
    private void Turn(){
        lookRigth = !lookRigth;
-       Vector3 escala = transform.localScale;
-       escala.x *= -1;
-       transform.localScale = escala;
+       Vector3 scale = transform.localScale;
+       scale.x *= -1;
+       transform.localScale = scale;
    }
 
    public void DamageReceived(double damage){
