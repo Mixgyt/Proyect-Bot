@@ -4692,7 +4692,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7780678, y: 1}
+    m_SensorSize: {x: 2.2994013, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -5024,7 +5024,7 @@ GameObject:
   - component: {fileID: 1644335906}
   - component: {fileID: 1644335908}
   - component: {fileID: 1644335907}
-  - component: {fileID: 1644335910}
+  - component: {fileID: 1644335911}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5135,7 +5135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeedMovement: 300
   smoothMovement: 0.03
-  JumpForce: 600
+  JumpForce: 800
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -5163,8 +5163,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!70 &1644335910
-CapsuleCollider2D:
+--- !u!61 &1644335911
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5176,9 +5176,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0067714346, y: -0.13120484}
-  m_Size: {x: 0.261346, y: 0.70634025}
-  m_Direction: 0
+  m_Offset: {x: 0.0028224587, y: -0.120395124}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.96875}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.36541104, y: 0.72795975}
+  m_EdgeRadius: 0
 --- !u!1 &1681126667
 GameObject:
   m_ObjectHideFlags: 0
