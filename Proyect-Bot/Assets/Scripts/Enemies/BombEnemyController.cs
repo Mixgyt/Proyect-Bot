@@ -17,7 +17,7 @@ public class BombEnemyController : MonoBehaviour
     [SerializeField]private float burstRange;
     [SerializeField]private LayerMask playerMask;
     private GameObject Player;
-    private PlayerController PlayerScript;
+    private HealthPlayer PlayerScript;
     private bool NearPlayer;
     private bool burst=true;
 
@@ -26,7 +26,7 @@ public class BombEnemyController : MonoBehaviour
      rb2d = GetComponent<Rigidbody2D>();
      BombAnim = GetComponent<Animator>();
      Player = GameObject.FindGameObjectWithTag("Player");
-     PlayerScript = Player.GetComponent<PlayerController>();
+     PlayerScript = Player.GetComponent<HealthPlayer>();
     }
 
     void FixedUpdate(){
