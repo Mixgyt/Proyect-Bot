@@ -78,7 +78,10 @@ public class BombEnemyController : MonoBehaviour
     }
     private void BurstEnemy(){
          float distPlayer = Vector2.Distance(transform.position, Player.transform.position);
-        if(distPlayer<burstRange){ PlayerScript.DamageReceived(2); }
+        if(distPlayer<burstRange){ PlayerScript.DamageReceived(2); }    
+    }
+
+    private void InstanceDestroy(){
         Destroy(gameObject);
     }
 
