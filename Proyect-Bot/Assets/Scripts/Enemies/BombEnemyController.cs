@@ -19,6 +19,7 @@ public class BombEnemyController : MonoBehaviour
     private GameObject Player;
     private PlayerController PlayerScript;
     private bool NearPlayer;
+    private bool burst=true;
 
     void Start()
     {
@@ -33,8 +34,8 @@ public class BombEnemyController : MonoBehaviour
      NearPlayer = distPlayer <= range;
      bool Burst = distPlayer <= burstRange;
     
-    if(Burst){
-       StartCoroutine(BurstEnemy());
+    if(Burst&&burst){
+       BurstAnim();
        speed*=0;
      }
      if(NearPlayer){
@@ -70,13 +71,15 @@ public class BombEnemyController : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
-
-    private IEnumerator BurstEnemy(){
-        yield return new WaitForSecondsRealtime(0.2f);
-        float distPlayer = Vector2.Distance(transform.position, Player.transform.position);
+    
+    private void BurstAnim(){
+        BombAnim.SetBool("explosion",true);
+        burst=false;
+    }
+    private void BurstEnemy(){
+         float distPlayer = Vector2.Distance(transform.position, Player.transform.position);
         if(distPlayer<burstRange){ PlayerScript.DamageReceived(2); }
         Destroy(gameObject);
-        yield return null;
     }
 
     void OnDrawGizmosSelected(){
