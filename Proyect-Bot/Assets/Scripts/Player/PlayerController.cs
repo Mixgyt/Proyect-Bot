@@ -38,12 +38,10 @@ public class PlayerController : MonoBehaviour
    {
        movimientoHorizontal = Input.GetAxisRaw("Horizontal")*SpeedMovement;
 
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump")&&inGround)
         {
           jump=true;
         }
-
-        if(Health<=0){ GameOver(); }
    }
 
     //Funcion que se repite consecutivamente sin importar los frames
@@ -86,15 +84,6 @@ public class PlayerController : MonoBehaviour
        Vector3 scale = transform.localScale;
        scale.x *= -1;
        transform.localScale = scale;
-   }
-
-   public void DamageReceived(double damage){
-    Health -= damage;
-    print("Tu vida es: "+Health);
-   }
-
-   private void GameOver(){
-    print("Has Muerto");
    }
 
    void OnDrawGizmosSelected(){

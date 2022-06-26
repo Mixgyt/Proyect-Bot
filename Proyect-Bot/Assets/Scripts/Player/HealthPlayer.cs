@@ -7,10 +7,13 @@ public class HealthPlayer : MonoBehaviour
 {
     public float Health;
     private float percentage;
+    private bool Protection=false;
     public Image ImgHealth;
+    private Animator PlayerAnim;
 
     void Start(){
       percentage = Health;
+      PlayerAnim = GetComponent<Animator>();
     }
 
     void Update(){
@@ -21,7 +24,16 @@ public class HealthPlayer : MonoBehaviour
     }
 
     public void DamageReceived(float damage){
+        if(!Protection) {
         Health -= damage;
-        print("vida"+Health);
+        PlayerAnim.SetBool("daño",true);
+        Protection = true;
+        print("vida: "+Health);
+        }
+    }
+
+    public void ProtectionStop(){
+        PlayerAnim.SetBool("daño",false);
+        Protection = false;
     }
 }
