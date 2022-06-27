@@ -15,7 +15,8 @@ public class ParallaxScript : MonoBehaviour
     }
 
     void Update(){
+        if(Prb2d!=null){
         offset = (Prb2d.velocity.x * 0.1f) * VelocidadMovimiento*Time.deltaTime;
-        material.mainTextureOffset += offset;
+        material.mainTextureOffset += offset;}
     }
 }

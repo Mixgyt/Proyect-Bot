@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
    private Rigidbody2D rb2d;
+   [System.NonSerialized]public bool CanMove=true;
 
    [Header("Movimiento")]
    [SerializeField] private float SpeedMovement;
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
    [Range(0,0.3f)][SerializeField] private float smoothMovement;
    private Vector3 speed = Vector3.zero;
    [System.NonSerialized]public bool lookRigth = true;
+   [SerializeField]private Vector2 HitForce;
 
       [Header("Salto")]
     [SerializeField]private float JumpForce;
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour
    {
        movimientoHorizontal = Input.GetAxisRaw("Horizontal")*SpeedMovement;
 
-        if(Input.GetButtonDown("Jump")&&inGround)
+        if(Input.GetButtonDown("Jump")&&inGround&&CanMove)
         {
           jump=true;
         }
@@ -48,7 +50,9 @@ public class PlayerController : MonoBehaviour
    void FixedUpdate(){
       inGround = Physics2D.OverlapBox(GroundController.position, BoxDimensions, 0f, WhatIsGround);
       //Mover
+      if(CanMove){
       Movement(movimientoHorizontal * Time.fixedDeltaTime, jump);
+      }
       if(inGround){ botAnim.SetBool("salto",false); }
    }
 
@@ -84,6 +88,10 @@ public class PlayerController : MonoBehaviour
        Vector3 scale = transform.localScale;
        scale.x *= -1;
        transform.localScale = scale;
+   }
+
+   public void Hit(Vector2 pointHit){
+      rb2d.velocity = new Vector2(-HitForce.x * pointHit.x, HitForce.y);
    }
 
    void OnDrawGizmosSelected(){

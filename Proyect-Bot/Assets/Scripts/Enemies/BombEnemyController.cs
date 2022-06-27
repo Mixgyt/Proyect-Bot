@@ -30,9 +30,12 @@ public class BombEnemyController : MonoBehaviour
     }
 
     void FixedUpdate(){
+     bool Burst=false;
+     
+    if(Player!=null){
      float distPlayer = Vector2.Distance(transform.position, Player.transform.position);
      NearPlayer = distPlayer <= range;
-     bool Burst = distPlayer <= burstRange;
+     Burst = distPlayer <= burstRange;}
     
     if(Burst&&burst){
        BurstAnim();
