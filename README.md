@@ -8,4 +8,4 @@ Es solo un proyecto casual que ya esta cancelado pero lo dejo por aquí. Funcion
 :)
 
 ![imagen_2022-09-06_143642791](https://user-images.githubusercontent.com/44759176/188733200-b843434c-253d-438f-8a05-e0193ed7de1d.png)
-Captura de baja calidad que aún conservo (-_-;)
+ <i>Captura de baja calidad que aún conservo (-_-;)<i>
